@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
-import mongoose, { Schema } from "mongoose";
-import jwt from "jsonwebtoken";
 import crypto from "crypto";
+import jwt from "jsonwebtoken";
+import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema(
   {
@@ -77,7 +77,9 @@ userSchema.methods.generateAccessToken = function () {
     email: this.email,
     username: this.username,
   };
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "15m" });
+  return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
+  });
 };
 
 userSchema.methods.generateRefreshToken = function () {
@@ -86,7 +88,7 @@ userSchema.methods.generateRefreshToken = function () {
     email: this.email,
     username: this.username,
   };
-  return jwt.sign(payload, process.env.JWT_SECRET, {
+  return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
     expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
   });
 };
