@@ -2,11 +2,10 @@ import mongoose from "mongoose";
 import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/api-error.js";
 import { Project } from "../models/project.model.js";
-import { AvailableRolesEnum, UserRolesEnum } from "../utils/constants.js";
 import { ApiResponse } from "../utils/api-response.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { ProjectMember } from "../models/projectMember.model.js";
-import { pipeline } from "nodemailer/lib/xoauth2/index.js";
+import ProjectMember from "../models/projectMembers.model.js";
+import { AvailableRolesEnum, UserRolesEnum } from "../utils/constants.js";
 
 export const getProjects = asyncHandler(async (req, res) => {
   const projects = await ProjectMember.aggregate([

@@ -1,7 +1,9 @@
 import jwt from "jsonwebtoken";
+import mongoose from "mongoose";
 import User from "../models/user.model.js";
 import { ApiError } from "../utils/api-error.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import ProjectMember from "../models/projectMembers.model.js";
 
 export const verifyJWT = asyncHandler(async (req, res, next) => {
   const token =
@@ -27,3 +29,32 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
 
   next();
 });
+
+export const validateProjectAccess = (roles = []) => {
+  return asyncHandler(async (req, res, next) => {
+    const { projectId } = req.params;
+    const userId = req.user._id;
+
+    if (!projectId) {
+      throw new ApiError(400, "Project ID is required");
+    }
+
+    const project = await ProjectMember.findOne({
+      user: new mongoose.Types.ObjectId(req.user._id),
+      project: new mongoose.Types.ObjectId(projectId),
+    });
+
+    if (!project) {
+      throw new ApiError(403, "Project not found");
+    }
+
+    const givenRoles = project.role;
+    req.user.role = givenRoles;
+
+    if (!roles.includes(givenRoles)) {
+      throw new ApiError(403, "Access denied");
+    }
+
+    next();
+  });
+};
