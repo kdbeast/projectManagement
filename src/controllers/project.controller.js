@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import { User } from "../models/user.model.js";
+import User from "../models/user.model.js";
 import { ApiError } from "../utils/api-error.js";
-import { Project } from "../models/project.model.js";
+import Project from "../models/project.model.js";
 import { ApiResponse } from "../utils/api-response.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import ProjectMember from "../models/projectMembers.model.js";

@@ -30,7 +30,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
   next();
 });
 
-export const validateProjectAccess = (roles = []) => {
+export const validateProjectPermission = (roles = []) => {
   return asyncHandler(async (req, res, next) => {
     const { projectId } = req.params;
     const userId = req.user._id;

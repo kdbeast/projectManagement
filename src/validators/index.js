@@ -1,6 +1,7 @@
 import { body } from "express-validator";
+import { AvailableRolesEnum } from "../utils/constants.js";
 
-const userRegistorValidation = (req, res, next) => {
+const userRegistorValidation = () => {
   return [
     body("username")
       .trim()
@@ -25,7 +26,7 @@ const userRegistorValidation = (req, res, next) => {
   ];
 };
 
-const userLoginValidation = (req, res, next) => {
+const userLoginValidation = () => {
   return [
     body("email")
       .trim()
@@ -37,7 +38,7 @@ const userLoginValidation = (req, res, next) => {
   ];
 };
 
-const userChangePasswordValidation = (req, res, next) => {
+const userChangePasswordValidation = () => {
   return [
     body("currentPassword")
       .trim()
@@ -52,7 +53,7 @@ const userChangePasswordValidation = (req, res, next) => {
   ];
 };
 
-const userForgetPasswordValidation = (req, res, next) => {
+const userForgetPasswordValidation = () => {
   return [
     body("email")
       .trim()
@@ -63,7 +64,7 @@ const userForgetPasswordValidation = (req, res, next) => {
   ];
 };
 
-const userResetPasswordValidation = (req, res, next) => {
+const userResetPasswordValidation = () => {
   return [
     body("newPassword")
       .trim()
@@ -74,10 +75,36 @@ const userResetPasswordValidation = (req, res, next) => {
   ];
 };
 
+const createProjectValidation = () => {
+  return [
+    body("name").trim().notEmpty().withMessage("Project name is required"),
+    body("description").trim().optional(),
+  ];
+};
+
+const addMemberToProjectValidation = () => {
+  return [
+    body("email")
+      .trim()
+      .notEmpty()
+      .withMessage("Email is required")
+      .isEmail()
+      .withMessage("Invalid email format"),
+    body("role")
+      .trim()
+      .notEmpty()
+      .withMessage("Role is required")
+      .isIn(AvailableRolesEnum)
+      .withMessage("Role is Invalid"),
+  ];
+};
+
 export {
   userLoginValidation,
   userRegistorValidation,
+  createProjectValidation,
   userResetPasswordValidation,
   userForgetPasswordValidation,
   userChangePasswordValidation,
+  addMemberToProjectValidation,
 };

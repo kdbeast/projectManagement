@@ -2,6 +2,7 @@ import cors from "cors";
 import express from "express";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.route.js";
+import projectRouter from "./routes/project.route.js";
 import healthCheckRouter from "./routes/healthCheck.route.js";
 
 const app = express();
@@ -24,6 +25,7 @@ app.use(
 
 app.use("/api/v1/healthcheck", healthCheckRouter);
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/projects", projectRouter);
 
 app.get("/", (req, res) => {
   res.send("Welcome to basecampy!");
